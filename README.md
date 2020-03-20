@@ -9,8 +9,11 @@ bla
 
 ### run
 `cd backend`
+
 `pipenv install`
+
 `export export FLASK_APP=mcMarket.py`
+
 `flask run`
 
 ### dependencies:
