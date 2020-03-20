@@ -1,10 +1,13 @@
 # mcMarket
 WirVsCorona shopping drive through App der Saufnasen.
 
-## description
+## frontend
+### description
 bla
 
-## dependencies:
+## backend
+### dependencies:
 * Flask
 * tinyDB
 * ...
+
