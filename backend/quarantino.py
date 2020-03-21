@@ -15,7 +15,10 @@ class HelloWorld(Resource):
 # telephone helper is called user
 #class user(Resource):
 
+parser = reqparse.RequestParser()
+parser.add_argument('id')
 
+#job related
 class job_list(Resource):
     def get(self):
         #query: get all jobs for user id
@@ -24,15 +27,27 @@ class job_list(Resource):
 # single job (defined by its id)
 class job(Resource):
     def get(self,job_id):
-            #query db and return job dict
-            desc="description for job"+str(job_id)
-            title="testTitle"
-            helper_ids=["helper id 1 for job "+str(job_id),"helper id 2 for job "+str(job_id)]
-            status="finished"
-            return {'job':job_id, 'title':title, 'description': "description"+desc, "helper_ids":helper_ids, 'status':status},200
+        #query db and return job dict
+        desc="description for job"+str(job_id)
+        title="testTitle"
+        helper_ids=["helper id 1 for job "+str(job_id),"helper id 2 for job "+str(job_id)]
+        status="finished"
+        return {'job':job_id, 'title':title, 'description': "description"+desc, "helper_ids":helper_ids, 'status':status},200
 
-parser = reqparse.RequestParser()
-parser.add_argument('id')
+#customer related
+class customer_job_list(Resource):
+    def get(self,customer_id): 
+        #return job list for user with id user_id
+        return "list of jobs for customer"
+
+    def post(self,customer_id):
+        args = parser.parse_args()
+        new_id = args["id"]
+        return {'Added job with id':'success'}, 201   
+
+class customer_job(Resource):
+    def delete(self,customer_id,job_id):
+        return "deleted job"
 
 #user related ("callcenter"-worker)
 class user_customer_list(Resource):
@@ -43,22 +58,23 @@ class user_customer_list(Resource):
     def post(self,user_id):
         args = parser.parse_args()
         new_id = args["id"]
-        return {"Added id "+str(new_id)+"to user": "success"}, 201
+        return {"Added customer with id "+str(new_id)+"to user with id"+str(user_id):"success"}, 201
 
 #assign customer ids (omis) to user ids
 class user_customer(Resource):    
     def delete(self,user_id,customer_id):
+        #delete customer id from user ids list 
         return "deleted"
 
-api.add_resource(HelloWorld, '/')
+api.add_resource(HelloWorld, '/api')
 
 #job related 
-api.add_resource(job_list, '/api/job')              #GET list of all jobs
-api.add_resource(job, '/api/job/<job_id>')          #GET PUT POST DELETE details of job with id <job_id>
+api.add_resource(job_list, '/api/job')                                                      #GET list of all jobs
+api.add_resource(job, '/api/job/<job_id>')                                                  #GET PUT POST DELETE details of job with id <job_id>
 
 #customer (omi) related 
-#api.add_resource(customer_job_list, '/customer/<customer_id>/jobs')       # GET customr job ids
-#api.add_resource(customer_job, '/customer/<customer_id>/job/<job_id>')    # PUT POST and DELETE for customer job ids
+api.add_resource(customer_job_list, '/api/customer/<customer_id>/jobs')                         # GET customr job ids
+api.add_resource(customer_job, '/api/customer/<customer_id>/job/<job_id>')                      # PUT POST and DELETE for customer job ids
 
 #user (callcenter worker) related
 api.add_resource(user_customer_list, '/api/user/<user_id>/customers')                        # GET all customers that are "managed" by the user or POST a new id
