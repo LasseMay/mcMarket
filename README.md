@@ -12,6 +12,8 @@ bla
 
 `pipenv install`
 
+`pipenv shell`
+
 `export export FLASK_APP=mcMarket.py`
 
 `flask run`
