@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template, request
 from flask_restful import reqparse, abort, Api, Resource
 
 
@@ -79,6 +79,53 @@ api.add_resource(customer_job, '/api/customer/<customer_id>/job/<job_id>')      
 #user (callcenter worker) related
 api.add_resource(user_customer_list, '/api/user/<user_id>/customers')                        # GET all customers that are "managed" by the user or POST a new id
 api.add_resource(user_customer,      '/api/user/<user_id>/customers/<customer_id>')          # DELETE the assignment of customer_id to user_id
+
+context = {
+    "logged_in": False,
+    "pages": {
+        "/about": "About",
+        "/partners": "Partner",
+        "/profile": "Profil",
+        "/placement": "Vermittelung",
+    },
+    "active_page": None
+}
+
+@app.route('/')
+@app.route('/index')
+def index():
+    context["active_page"] = request.path
+    return render_template("index.html", context=context)
+
+@app.route('/about')
+def about():
+    context["active_page"] = request.path
+    return render_template("about.html", context=context)
+
+@app.route('/login')
+def login():
+    context["active_page"] = request.path
+    return render_template("login.html", context=context)
+
+@app.route('/register')
+def register():
+    context["active_page"] = request.path
+    return render_template("register.html", context=context)
+
+@app.route('/partners')
+def partners():
+    context["active_page"] = request.path
+    return render_template("partners.html", context=context)
+
+@app.route('/placement')
+def placement():
+    context["active_page"] = request.path
+    return render_template("placement.html", context=context)
+
+@app.route('/profile')
+def profile():
+    context["active_page"] = request.path
+    return render_template("profile.html", context=context)
 
 if __name__ == '__main__':
     app.run(debug=True)
